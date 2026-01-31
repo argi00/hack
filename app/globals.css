@@ -1,26 +1,122 @@
 @import "tailwindcss";
 
+/* Charte graphique ISM */
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* Marron ISM */
+  --ism-brown: #704214;
+  --ism-brown-light: #8B6F47;
+  --ism-brown-dark: #5C3317;
+  /* Orange ISM */
+  --ism-orange: #FF6600;
+  --ism-orange-light: #FF8C00;
+  /* Beige ISM */
+  --ism-beige: #D4A574;
+  --ism-beige-light: #F5EBE0;
+  /* Bleu ISM */
+  --ism-blue: #003B7A;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-ism-brown: var(--ism-brown);
+  --color-ism-brown-light: var(--ism-brown-light);
+  --color-ism-brown-dark: var(--ism-brown-dark);
+  --color-ism-orange: var(--ism-orange);
+  --color-ism-orange-light: var(--ism-orange-light);
+  --color-ism-beige: var(--ism-beige);
+  --color-ism-beige-light: var(--ism-beige-light);
+  --color-ism-blue: var(--ism-blue);
+  --font-sans: var(--font-open-sans);
+  --font-display: var(--font-montserrat);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-open-sans), system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-montserrat), system-ui, sans-serif;
+}
+
+/* Classes utilitaires ISM */
+.btn-primary {
+  @apply px-8 py-3 rounded-full font-semibold transition-all duration-200;
+  background: var(--ism-orange);
+  color: white;
+  min-height: 44px;
+}
+.btn-primary:hover {
+  background: var(--ism-orange-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
+}
+
+.btn-secondary {
+  @apply px-8 py-3 rounded-full font-semibold border-2 border-white transition-all duration-200;
+  color: white;
+  min-height: 44px;
+}
+.btn-secondary:hover {
+  @apply bg-white;
+  color: var(--ism-brown);
+}
+
+.btn-tertiary {
+  @apply px-8 py-3 rounded-full font-semibold transition-all duration-200;
+  background: var(--ism-brown);
+  color: white;
+  min-height: 44px;
+}
+.btn-tertiary:hover {
+  background: var(--ism-brown-dark);
+  transform: translateY(-1px);
+}
+
+.card {
+  @apply rounded-2xl bg-white p-6 shadow-lg transition-shadow;
+}
+.card:hover {
+  box-shadow: 0 8px 24px rgba(112, 66, 20, 0.1);
+}
+
+.card-beige {
+  @apply rounded-2xl p-6 shadow-lg transition-shadow;
+  background: var(--ism-beige-light);
+}
+.card-beige:hover {
+  box-shadow: 0 8px 24px rgba(112, 66, 20, 0.08);
+}
+
+.badge-orange {
+  @apply px-3 py-1 rounded-full text-sm font-semibold;
+  background: rgba(255, 102, 0, 0.2);
+  color: var(--ism-orange);
+}
+
+.badge-brown {
+  @apply px-3 py-1 rounded-full text-sm font-semibold text-white;
+  background: var(--ism-brown);
+}
+
+.badge-green {
+  @apply px-3 py-1 rounded-full text-sm font-semibold;
+  background: #DCFCE7;
+  color: #064E3B;
+}
+
+.section {
+  @apply py-16 md:py-24;
+}
+
+.container-custom {
+  @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+.gradient-brown {
+  background: linear-gradient(135deg, var(--ism-brown) 0%, var(--ism-brown-light) 100%);
 }
