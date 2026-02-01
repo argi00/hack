@@ -39,9 +39,9 @@ export async function POST(request: Request) {
 
     const userId = payload.userId;
 
-    await prisma.gameProgress.upsert({
-      where: { userId },
-      create: {
+    // Créer un nouveau projet (chaque complétion du jeu = nouveau projet)
+    await prisma.gameProgress.create({
+      data: {
         userId,
         projectName,
         projectContent:
@@ -59,25 +59,6 @@ export async function POST(request: Request) {
         isComplete: true,
         currentPhase: 6,
         currentQuestion: 0,
-      },
-      update: {
-        projectName,
-        projectContent:
-          typeof projectContent === "object"
-            ? JSON.stringify(projectContent)
-            : projectContent ?? null,
-        oneSentence: oneSentence ?? null,
-        phaseScores:
-          typeof phaseScores === "object"
-            ? JSON.stringify(phaseScores)
-            : phaseScores ?? "{}",
-        answers: typeof answers === "object" ? JSON.stringify(answers) : answers ?? "{}",
-        totalScore: typeof totalScore === "number" ? totalScore : 0,
-        maturityScore: typeof maturityScore === "number" ? maturityScore : 0,
-        isComplete: true,
-        currentPhase: 6,
-        currentQuestion: 0,
-        lastPlayedAt: new Date(),
       },
     });
 

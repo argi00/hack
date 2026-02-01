@@ -3,11 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import { useAuth } from "@/lib/auth-context";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { refetch } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -32,8 +32,8 @@ export default function LoginPage() {
         return;
       }
 
+      await refetch();
       router.push("/");
-      router.refresh();
     } catch {
       setError("Impossible de contacter le serveur. Réessayez.");
     } finally {
@@ -42,9 +42,7 @@ export default function LoginPage() {
   };
 
   return (
-    <>
-      <Header />
-      <main className="section bg-[#F5EBE0]">
+    <main className="section bg-[#F5EBE0]">
         <div className="container-custom">
           <div className="mx-auto max-w-md">
             <div className="card p-6 sm:p-8">
@@ -125,7 +123,5 @@ export default function LoginPage() {
           </div>
         </div>
       </main>
-      <Footer />
-    </>
   );
 }

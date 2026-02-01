@@ -21,38 +21,30 @@ export async function GET() {
 
     const userId = payload.userId;
 
-    // Projets en pré-incubation (jeu terminé)
-    const gameProgress = await prisma.gameProgress.findUnique({
-      where: { userId },
+    // Projets en pré-incubation (jeux terminés)
+    const gameProgressList = await prisma.gameProgress.findMany({
+      where: { userId, isComplete: true },
+      orderBy: { lastPlayedAt: "desc" },
     });
-    const preIncubationCount = gameProgress?.isComplete ? 1 : 0;
-    let preIncubationProjects: Array<{
-      projectName: string;
-      oneSentence: string | null;
-      projectContent: Record<string, string>;
-      maturityScore: number;
-      lastPlayedAt: string;
-    }> = [];
-
-    if (gameProgress?.isComplete) {
+    const preIncubationCount = gameProgressList.length;
+    const preIncubationProjects = gameProgressList.map((gp) => {
       let projectContent: Record<string, string> = {};
       try {
-        projectContent = gameProgress.projectContent
-          ? (JSON.parse(gameProgress.projectContent) as Record<string, string>)
+        projectContent = gp.projectContent
+          ? (JSON.parse(gp.projectContent) as Record<string, string>)
           : {};
       } catch {
         projectContent = {};
       }
-      preIncubationProjects = [
-        {
-          projectName: gameProgress.projectName,
-          oneSentence: gameProgress.oneSentence,
-          projectContent,
-          maturityScore: gameProgress.maturityScore ?? 0,
-          lastPlayedAt: gameProgress.lastPlayedAt.toISOString(),
-        },
-      ];
-    }
+      return {
+        id: gp.id,
+        projectName: gp.projectName,
+        oneSentence: gp.oneSentence,
+        projectContent,
+        maturityScore: gp.maturityScore ?? 0,
+        lastPlayedAt: gp.lastPlayedAt.toISOString(),
+      };
+    });
 
     // Nombre de projets en incubation
     const incubationCount = await prisma.project.count({

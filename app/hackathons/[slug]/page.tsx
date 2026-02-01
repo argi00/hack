@@ -1,7 +1,5 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
 import { prisma } from "@/lib/prisma";
 
 export async function generateStaticParams() {
@@ -35,9 +33,7 @@ export default async function HackathonSlugPage({
   });
 
   return (
-    <>
-      <Header />
-      <main className="section bg-white">
+    <main className="section bg-white">
         <div className="container-custom max-w-3xl">
           {hackathon.featured && (
             <span className="badge-orange">À LA UNE</span>
@@ -85,7 +81,5 @@ export default async function HackathonSlugPage({
           </Link>
         </div>
       </main>
-      <Footer />
-    </>
   );
 }

@@ -1,6 +1,4 @@
 import Link from "next/link";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
 import { prisma } from "@/lib/prisma";
 
 export default async function HackathonsPage() {
@@ -21,9 +19,7 @@ export default async function HackathonsPage() {
     });
 
   return (
-    <>
-      <Header />
-      <main className="section bg-[#F5EBE0]">
+    <main className="section bg-[#F5EBE0]">
         <div className="container-custom">
           <header className="mb-12 text-center">
             <p className="text-sm font-semibold uppercase tracking-wide text-[#8B6F47]">
@@ -181,8 +177,6 @@ export default async function HackathonsPage() {
             </Link>
           </div>
         </div>
-      </main>
-      <Footer />
-    </>
+    </main>
   );
 }

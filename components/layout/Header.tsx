@@ -1,43 +1,38 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/lib/auth-context";
 
-const navLinks = [
+const baseNavLinks = [
   { href: "/", label: "Accueil" },
   { href: "/hackathons", label: "Hackathons" },
   { href: "/ressources", label: "Ressources" },
   { href: "/contact", label: "Contact" },
 ];
 
-interface User {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
+function getNavLinks(user: { id: string } | null) {
+  if (!user) return baseNavLinks;
+  return [
+    baseNavLinks[0],
+    { href: "/mes-projets", label: "Mes projets" },
+    ...baseNavLinks.slice(1),
+  ];
 }
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  const { user, logout } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
 
-  useEffect(() => {
-    fetch("/api/auth/session")
-      .then((res) => res.json())
-      .then((data) => setUser(data.user))
-      .catch(() => setUser(null));
-  }, [pathname]);
-
   const handleLogout = async () => {
-    await fetch("/api/logout", { method: "POST" });
-    setUser(null);
     setMobileMenuOpen(false);
-    router.push("/");
-    router.refresh();
+    await logout();
+    if (pathname !== "/") router.push("/");
   };
 
   return (
@@ -46,19 +41,24 @@ export default function Header() {
         <div className="flex h-[70px] md:h-[90px] items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 min-w-0">
-            <div className="rounded-lg bg-white px-3 py-1.5 sm:px-4 sm:py-2">
-              <span className="font-display text-base sm:text-lg font-bold text-[#704214]">
-                ISM
-              </span>
-              <span className="ml-0.5 sm:ml-1 block text-[10px] sm:text-xs font-semibold text-[#FF6600]">
+            <div className="flex items-center gap-2 rounded-lg bg-white px-3 py-1.5 sm:px-4 sm:py-2">
+              <Image
+                src="/logo-ism.png"
+                alt="Groupe ISM"
+                width={36}
+                height={36}
+                className="h-8 w-8 sm:h-9 sm:w-9 object-contain"
+                priority
+              />
+              <span className="font-display text-[10px] sm:text-xs font-semibold text-[#FF6600]">
                 INCUBATEUR
               </span>
             </div>
           </Link>
 
-          {/* Desktop Nav - 5 liens max pour une navigation claire */}
+          {/* Desktop Nav — Accueil, Mes projets (si connecté), Hackathons, Ressources, Contact */}
           <nav className="hidden items-center gap-6 xl:gap-8 lg:flex" aria-label="Navigation principale">
-            {navLinks.map((link) => (
+            {getNavLinks(user).map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -151,7 +151,7 @@ export default function Header() {
             className="overflow-hidden bg-[#5C3317] lg:hidden"
           >
             <nav className="container-custom flex flex-col gap-4 py-6" aria-label="Menu mobile">
-              {navLinks.map((link) => (
+              {getNavLinks(user).map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}

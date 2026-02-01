@@ -19,7 +19,7 @@ model User {
   projectDescription   String?
   createdAt            DateTime               @default(now())
   updatedAt            DateTime               @updatedAt
-  gameProgress         GameProgress?
+  gameProgress         GameProgress[]
   projects             Project[]
   hackathonRegistrations HackathonRegistration[]
 }
@@ -64,11 +64,11 @@ model HackathonRegistration {
 
 model GameProgress {
   id             String   @id @default(cuid())
-  userId         String   @unique
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   projectName    String
   currentPhase   Int      @default(1)
-  currentQuestion Int    @default(0)
+  currentQuestion Int     @default(0)
   phaseScores    String   // JSON: {"1": 150, "2": 140, ...}
   answers        String   // JSON: {"1_phase1_problem": "opt1", ...}
   projectContent String?  // JSON: {"phase1_problem": "...", "phase1_solution": "..."}
@@ -79,4 +79,6 @@ model GameProgress {
   lastPlayedAt   DateTime @default(now())
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+
+  @@index([userId])
 }

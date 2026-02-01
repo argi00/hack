@@ -1,6 +1,60 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
+
+const MAMANE_EMAIL = "mamane@test.com";
+const MAMANE_PASSWORD = "password123";
+
+const mamanePreIncubation = {
+  projectName: "AgriPrice — Prix agricoles en temps réel",
+  oneSentence:
+    "Une app qui permet aux agriculteurs du Sénégal d'accéder aux prix du marché en temps réel par SMS pour vendre au meilleur moment.",
+  projectContent: {
+    phase1_problem:
+      "Les agriculteurs n'ont pas accès aux prix du marché en temps réel et vendent souvent à perte ou trop tôt.",
+    phase1_solution:
+      "Une plateforme SMS et mobile qui diffuse les prix des principaux marchés et aide à décider quand et où vendre.",
+    phase1_target_desc:
+      "Agriculteurs et coopératives au Sénégal, notamment en zones rurales peu connectées.",
+    phase2_market_desc:
+      "Marché agricole sénégalais, avec focus sur l'arachide, le mil et le maïs.",
+    phase2_differentiation:
+      "Fonctionnement par SMS sans smartphone, prix mis à jour quotidiennement par des relais terrain.",
+    phase3_revenue:
+      "Abonnement SMS payant pour les alertes prix, partenariats avec coopératives et ONG.",
+    phase4_value:
+      "Nous aidons les agriculteurs à vendre au meilleur prix en leur donnant l'information au bon moment, par le canal qu'ils utilisent déjà (SMS).",
+    phase5_next_steps:
+      "Tester avec 2 coopératives pilotes, valider les sources de prix, lancer la version SMS beta.",
+    phase6_one_sentence:
+      "Une app qui permet aux agriculteurs du Sénégal d'accéder aux prix du marché en temps réel par SMS pour vendre au meilleur moment.",
+  },
+  maturityScore: 78,
+  phaseScores: { "1": 180, "2": 160, "3": 140, "4": 150, "5": 130, "6": 170 },
+  totalScore: 930,
+};
+
+const mamaneIncubationProjects = [
+  {
+    name: "AgriPrice — Prix agricoles en temps réel",
+    status: "incubation",
+    description:
+      "Plateforme SMS et mobile pour diffuser les prix du marché agricole en temps réel aux agriculteurs. Phase pilote avec 2 coopératives.",
+  },
+  {
+    name: "EduTab Sénégal",
+    status: "incubation",
+    description:
+      "Tablettes éducatives préchargées avec contenus en français et langues locales pour les écoles rurales. Partenariat avec le ministère de l'Éducation.",
+  },
+  {
+    name: "SantéMobile — Rendez-vous et rappels",
+    status: "pre-incubation",
+    description:
+      "Application de prise de rendez-vous et rappels SMS pour les centres de santé. En phase de validation du concept avec des dispensaires.",
+  },
+];
 
 const hackathons = [
   {
@@ -54,6 +108,86 @@ async function main() {
     });
   }
   console.log("Seed terminé :", hackathons.length, "hackathons créés/mis à jour");
+
+  // Utilisateur Mamane + projets factices
+  const passwordHash = await bcrypt.hash(MAMANE_PASSWORD, 10);
+  const mamane = await prisma.user.upsert({
+    where: { email: MAMANE_EMAIL },
+    create: {
+      email: MAMANE_EMAIL,
+      passwordHash,
+      firstName: "Mamane",
+      lastName: "Demo",
+      phone: "221771234567",
+      hasProject: true,
+      projectDescription: mamanePreIncubation.projectName,
+    },
+    update: {
+      firstName: "Mamane",
+      lastName: "Demo",
+      hasProject: true,
+      projectDescription: mamanePreIncubation.projectName,
+    },
+  });
+
+  // Supprimer les anciens GameProgress pour éviter les doublons au re-seed
+  await prisma.gameProgress.deleteMany({ where: { userId: mamane.id } });
+  
+  // Créer le projet en pré-incubation
+  await prisma.gameProgress.create({
+    data: {
+      userId: mamane.id,
+      projectName: mamanePreIncubation.projectName,
+      projectContent: JSON.stringify(mamanePreIncubation.projectContent),
+      oneSentence: mamanePreIncubation.oneSentence,
+      maturityScore: mamanePreIncubation.maturityScore,
+      phaseScores: JSON.stringify(mamanePreIncubation.phaseScores),
+      totalScore: mamanePreIncubation.totalScore,
+      answers: "{}",
+      isComplete: true,
+    },
+  });
+
+  await prisma.project.deleteMany({ where: { userId: mamane.id } });
+  for (const p of mamaneIncubationProjects) {
+    await prisma.project.create({
+      data: {
+        userId: mamane.id,
+        name: p.name,
+        status: p.status,
+        description: p.description,
+      },
+    });
+  }
+
+  const agritech = await prisma.hackathon.findUnique({
+    where: { slug: "agritech-2026" },
+  });
+  if (agritech) {
+    await prisma.hackathonRegistration.upsert({
+      where: {
+        userId_hackathonId: { userId: mamane.id, hackathonId: agritech.id },
+      },
+      create: {
+        userId: mamane.id,
+        hackathonId: agritech.id,
+      },
+      update: {},
+    });
+  }
+
+  console.log(
+    "Utilisateur Mamane créé/mis à jour :",
+    MAMANE_EMAIL,
+    "(mot de passe:",
+    MAMANE_PASSWORD,
+    ")"
+  );
+  console.log(
+    "Projets factices : 1 pré-incubation +",
+    mamaneIncubationProjects.length,
+    "incubation"
+  );
 }
 
 main()

@@ -3,8 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
 
 type Step = 1 | 2 | 3 | "success";
 
@@ -178,9 +176,7 @@ export default function InscriptionPage() {
   };
 
   return (
-    <>
-      <Header />
-      <main className="section bg-[#F5EBE0]">
+    <main className="section bg-[#F5EBE0]">
         <div className="container-custom">
           <div className="mx-auto max-w-lg">
             <h1 className="text-center font-display text-2xl font-bold text-[#704214] sm:text-3xl">
@@ -548,7 +544,5 @@ export default function InscriptionPage() {
           </div>
         </div>
       </main>
-      <Footer />
-    </>
   );
 }

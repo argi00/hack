@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const footerLinks = {
   navigation: [
@@ -37,9 +38,16 @@ export default function Footer() {
         <div className="grid gap-10 sm:gap-12 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
           {/* Colonne 1 - Logo & Description */}
           <div className="sm:col-span-2 md:col-span-1">
-            <Link href="/" className="inline-block">
+            <Link href="/" className="inline-flex items-center gap-2">
+              <Image
+                src="/logo-ism.png"
+                alt="Groupe ISM"
+                width={40}
+                height={40}
+                className="h-10 w-10 object-contain"
+              />
               <span className="font-display text-lg font-bold text-white">
-                ISM INCUBATEUR
+                INCUBATEUR
               </span>
             </Link>
             <p className="mt-6 text-sm leading-relaxed text-[#CCCCCC]">
