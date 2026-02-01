@@ -7,6 +7,7 @@ import GameShowcase from "@/components/home/GameShowcase";
 import SuccessStories from "@/components/home/SuccessStories";
 import Hackathons from "@/components/home/Hackathons";
 import Resources from "@/components/home/Resources";
+import Partners from "@/components/home/Partners";
 import CTAFinal from "@/components/home/CTAFinal";
 import UserDashboard from "@/components/dashboard/UserDashboard";
 import { useAuth } from "@/lib/auth-context";
@@ -39,6 +40,7 @@ export default function HomeContent() {
       <SuccessStories />
       <Hackathons />
       <Resources />
+      <Partners />
       <CTAFinal />
     </main>
   );

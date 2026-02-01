@@ -27,6 +27,7 @@ model User {
   coach                Coach?
   feedbacks            Feedback[]
   gameProgressFeedbacks GameProgressFeedback[]
+  savedResources       SavedResource[]
   
   @@index([role])
   @@index([isActive])
@@ -161,3 +162,53 @@ model GameProgressFeedback {
   @@index([userId])
 }
 
+model Resource {
+  id              String            @id @default(cuid())
+  title           String            @unique
+  description     String
+  content         String
+  category        String            // Guides | Lancement | Business | Pitch | Finance | Metriques | Marketing | Outils
+  difficulty      String            // Debutant | Intermediaire | Avance
+  duration        Int               // En minutes
+  imageUrl        String?
+  videoUrl        String?
+  externalUrl     String?           // URL externe si c'est un lien
+  author          String
+  source          String?           // D'où vient la ressource
+  status          String            @default("draft") // draft ou published
+  tags            String            // JSON array stringified
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  
+  savedBy         SavedResource[]
+  relatedFrom     RelatedResource[] @relation("from")
+  relatedTo       RelatedResource[] @relation("to")
+  
+  @@index([category])
+  @@index([difficulty])
+  @@index([status])
+}
+
+model SavedResource {
+  id          String    @id @default(cuid())
+  userId      String
+  resourceId  String
+  savedAt     DateTime  @default(now())
+  
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resource    Resource  @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, resourceId])
+  @@index([userId])
+}
+
+model RelatedResource {
+  id              String    @id @default(cuid())
+  fromResourceId  String
+  toResourceId    String
+  
+  fromResource    Resource  @relation("from", fields: [fromResourceId], references: [id], onDelete: Cascade)
+  toResource      Resource  @relation("to", fields: [toResourceId], references: [id], onDelete: Cascade)
+  
+  @@unique([fromResourceId, toResourceId])
+}
