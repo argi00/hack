@@ -102,12 +102,11 @@ body {
 .card-baobab {
   @apply rounded-2xl p-6 shadow-md transition-all duration-300 relative overflow-hidden sm:p-8;
   background-color: white;
-  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.94) 100%), 
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.92) 100%), 
                     url('/baobab.jpeg');
-  background-size: auto, 300%;
-  background-position: center, center right;
+  background-size: auto, contain;
+  background-position: center;
   background-repeat: no-repeat;
-  background-attachment: scroll, fixed;
 }
 .card-baobab:hover {
   box-shadow: 0 12px 28px rgba(112, 66, 20, 0.15);
@@ -117,12 +116,11 @@ body {
 .section-baobab {
   @apply relative min-h-screen;
   background-color: #F5EBE0;
-  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.80) 0%, rgba(255, 255, 255, 0.82) 100%),
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.88) 100%),
                     url('/baobab.jpeg');
-  background-size: auto, 250%;
-  background-position: center, center right;
+  background-size: auto, contain;
+  background-position: center;
   background-repeat: no-repeat;
-  background-attachment: scroll, fixed;
 }
 
 /* Badges - tailles standardisées */
