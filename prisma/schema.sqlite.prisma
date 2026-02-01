@@ -1,0 +1,19 @@
+// Script pour basculer entre SQLite (dev) et PostgreSQL (prod)
+// Prisma schema - ISM Incubateur - SQLITE VERSION
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// IMPORTANT: Ce fichier est pour référence seulement
+// Le fichier actif est prisma/schema.prisma
+
+// Pour revenir à SQLite en dev:
+// 1. Copiez le contenu de ce fichier dans prisma/schema.prisma
+// 2. Remplacez le datasource db { provider = "postgresql" ... }
+// 3. Supprimez la ligne directUrl
+// 4. Exécutez: npx prisma migrate dev
