@@ -14,8 +14,28 @@ const baseNavLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
-function getNavLinks(user: { id: string } | null) {
+function getNavLinks(user: { id: string; role?: string } | null) {
   if (!user) return baseNavLinks;
+  
+  // Coach ou Admin: remplacer Accueil par leur dashboard
+  if (user.role === "COACH") {
+    return [
+      { href: "/coach", label: "Accueil" },
+      { href: "/hackathons", label: "Hackathons" },
+      { href: "/ressources", label: "Ressources" },
+      { href: "/contact", label: "Contact" },
+    ];
+  }
+  
+  if (user.role === "ADMIN") {
+    return [
+      { href: "/admin", label: "Accueil" },
+      { href: "/hackathons", label: "Hackathons" },
+      { href: "/ressources", label: "Ressources" },
+      { href: "/contact", label: "Contact" },
+    ];
+  }
+  
   return [
     baseNavLinks[0],
     { href: "/mes-projets", label: "Mes projets" },
@@ -40,7 +60,14 @@ export default function Header() {
       <div className="container-custom">
         <div className="flex h-[70px] md:h-[90px] items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 min-w-0">
+          <Link 
+            href={
+              user?.role === "COACH" ? "/coach" :
+              user?.role === "ADMIN" ? "/admin" :
+              "/"
+            } 
+            className="flex items-center gap-2 min-w-0"
+          >
             <div className="flex items-center gap-2 rounded-lg bg-white px-3 py-1.5 sm:px-4 sm:py-2">
               <Image
                 src="/logo-ism.png"
