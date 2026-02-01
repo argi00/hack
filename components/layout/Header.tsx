@@ -14,11 +14,25 @@ const baseNavLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
-function getNavLinks(user: { id: string } | null) {
+function getNavLinks(user: { id: string; role?: string } | null) {
   if (!user) return baseNavLinks;
+  
+  // Déterminer le lien "Accueil" selon le rôle
+  const homeLink = user.role === "ADMIN" ? "/admin" : user.role === "COACH" ? "/coach" : "/";
+  
+  const homeNavLink = { href: homeLink, label: "Accueil" };
+  
+  // Ajouter "Mes projets" pour les utilisateurs réguliers
+  if (user.role === "USER" || !user.role) {
+    return [
+      homeNavLink,
+      { href: "/mes-projets", label: "Mes projets" },
+      ...baseNavLinks.slice(1),
+    ];
+  }
+  
   return [
-    baseNavLinks[0],
-    { href: "/mes-projets", label: "Mes projets" },
+    homeNavLink,
     ...baseNavLinks.slice(1),
   ];
 }

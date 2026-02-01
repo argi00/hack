@@ -26,8 +26,20 @@ export async function GET() {
         where: { userId, isComplete: true },
         orderBy: { lastPlayedAt: "desc" },
       }),
-      prisma.project.findMany({
+      (prisma as any).project.findMany({
         where: { userId },
+               include: {
+                 feedbacks: {
+                   select: {
+                     id: true,
+                     category: true,
+                     priority: true,
+                     content: true,
+                     createdAt: true,
+                   },
+                   orderBy: { createdAt: "desc" },
+                 },
+               },
         orderBy: { updatedAt: "desc" },
       }),
     ]);
@@ -60,6 +72,13 @@ export async function GET() {
       description: p.description,
       createdAt: p.createdAt.toISOString(),
       updatedAt: p.updatedAt.toISOString(),
+         feedbacks: (p as any).feedbacks?.map((f: any) => ({
+           id: f.id,
+           category: f.category,
+           priority: f.priority,
+           content: f.content,
+           createdAt: f.createdAt.toISOString(),
+         })) || [],
     }));
 
     const all = [...preIncubationProjects, ...incubation];

@@ -18,38 +18,47 @@ type PreIncubationProject = {
 
 type IncubationProject = {
   type: "incubation";
-  id: string;
-  name: string;
-  status: string;
-  description: string | null;
-  createdAt: string;
-  updatedAt: string;
-};
-
-type ProjectItem = PreIncubationProject | IncubationProject;
-
-function isPreIncubation(p: ProjectItem): p is PreIncubationProject {
-  return p.type === "pre-incubation";
-}
-
-export default function MesProjetsPage() {
-  const router = useRouter();
-  const [projects, setProjects] = useState<ProjectItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [selected, setSelected] = useState<ProjectItem | null>(null);
-  const [mode, setMode] = useState<"list" | "view" | "edit">("list");
-  const [editForm, setEditForm] = useState<Record<string, string>>({});
-  const [saving, setSaving] = useState(false);
-  const [saveError, setSaveError] = useState<string | null>(null);
-
-  const fetchProjects = () => {
-    setLoading(true);
-    setError(null);
-    fetch("/api/user/projects")
-      .then(async (r) => {
-        const data = await r.json();
+                                    className="input-ism mt-1 resize-y"
+                                  />
         if (data.error) {
+                                {selected.feedbacks && selected.feedbacks.length > 0 && (
+                                  <div className="rounded-lg border-2 border-[#FF6600] bg-orange-50 p-4 mt-6">
+                                    <p className="text-sm font-semibold text-[#704214] mb-3">
+                                      📋 Feedbacks des coaches ({selected.feedbacks.length})
+                                    </p>
+                                    <div className="space-y-3 max-h-60 overflow-y-auto">
+                                      {selected.feedbacks.map((feedback) => (
+                                        <div
+                                          key={feedback.id}
+                                          className="p-3 bg-white rounded-lg border border-orange-200"
+                                        >
+                                          <div className="flex gap-2 mb-2 flex-wrap">
+                                            <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded font-medium">
+                                              {feedback.category}
+                                            </span>
+                                            <span
+                                              className={`px-2 py-1 text-xs rounded font-medium ${
+                                                feedback.priority === "HAUTE"
+                                                  ? "bg-red-100 text-red-700"
+                                                  : feedback.priority === "MOYENNE"
+                                                  ? "bg-yellow-100 text-yellow-700"
+                                                  : "bg-green-100 text-green-700"
+                                              }`}
+                                            >
+                                              Priorité {feedback.priority}
+                                            </span>
+                                            <span className="text-xs text-gray-500 ml-auto">
+                                              {formatDate(feedback.createdAt)}
+                                            </span>
+                                          </div>
+                                          <p className="text-sm text-gray-700">
+                                            {feedback.content}
+                                          </p>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
           setError(data.error);
           if (r.status === 401) router.replace("/login");
         } else setProjects(data.projects ?? []);
@@ -406,6 +415,44 @@ export default function MesProjetsPage() {
                                 <p className="text-sm text-gray-500">
                                   Mis à jour le{" "}
                                   {formatDate(selected.updatedAt)}
+                                                               {selected.feedbacks && selected.feedbacks.length > 0 && (
+                                                                 <div className="rounded-lg border-2 border-[#FF6600] bg-orange-50 p-4">
+                                                                   <p className="text-sm font-semibold text-[#704214] mb-3">
+                                                                     📋 Feedbacks des coaches ({selected.feedbacks.length})
+                                                                   </p>
+                                                                   <div className="space-y-3 max-h-60 overflow-y-auto">
+                                                                     {selected.feedbacks.map((feedback) => (
+                                                                       <div
+                                                                         key={feedback.id}
+                                                                         className="p-3 bg-white rounded-lg border border-orange-200"
+                                                                       >
+                                                                         <div className="flex gap-2 mb-2 flex-wrap">
+                                                                           <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded font-medium">
+                                                                             {feedback.category}
+                                                                           </span>
+                                                                           <span
+                                                                             className={`px-2 py-1 text-xs rounded font-medium ${
+                                                                               feedback.priority === "HAUTE"
+                                                                                 ? "bg-red-100 text-red-700"
+                                                                                 : feedback.priority === "MOYENNE"
+                                                                                 ? "bg-yellow-100 text-yellow-700"
+                                                                                 : "bg-green-100 text-green-700"
+                                                                             }`}
+                                                                           >
+                                                                             Priorité {feedback.priority}
+                                                                           </span>
+                                                                           <span className="text-xs text-gray-500 ml-auto">
+                                                                             {formatDate(feedback.createdAt)}
+                                                                           </span>
+                                                                         </div>
+                                                                         <p className="text-sm text-gray-700">
+                                                                           {feedback.content}
+                                                                         </p>
+                                                                       </div>
+                                                                     ))}
+                                                                   </div>
+                                                                 </div>
+                                                               )}
                                 </p>
                               </>
                             )}
@@ -520,6 +567,44 @@ export default function MesProjetsPage() {
                                       }))
                                     }
                                     rows={5}
+                                                                   {selected.feedbacks && selected.feedbacks.length > 0 && (
+                                                                     <div className="rounded-lg border-2 border-[#FF6600] bg-orange-50 p-4 mt-6">
+                                                                       <p className="text-sm font-semibold text-[#704214] mb-3">
+                                                                         📋 Feedbacks des coaches ({selected.feedbacks.length})
+                                                                       </p>
+                                                                       <div className="space-y-3 max-h-60 overflow-y-auto">
+                                                                         {selected.feedbacks.map((feedback) => (
+                                                                           <div
+                                                                             key={feedback.id}
+                                                                             className="p-3 bg-white rounded-lg border border-orange-200"
+                                                                           >
+                                                                             <div className="flex gap-2 mb-2 flex-wrap">
+                                                                               <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded font-medium">
+                                                                                 {feedback.category}
+                                                                               </span>
+                                                                               <span
+                                                                                 className={`px-2 py-1 text-xs rounded font-medium ${
+                                                                                   feedback.priority === "HAUTE"
+                                                                                     ? "bg-red-100 text-red-700"
+                                                                                     : feedback.priority === "MOYENNE"
+                                                                                     ? "bg-yellow-100 text-yellow-700"
+                                                                                     : "bg-green-100 text-green-700"
+                                                                                 }`}
+                                                                               >
+                                                                                 Priorité {feedback.priority}
+                                                                               </span>
+                                                                               <span className="text-xs text-gray-500 ml-auto">
+                                                                                 {formatDate(feedback.createdAt)}
+                                                                               </span>
+                                                                             </div>
+                                                                             <p className="text-sm text-gray-700">
+                                                                               {feedback.content}
+                                                                             </p>
+                                                                           </div>
+                                                                         ))}
+                                                                       </div>
+                                                                     </div>
+                                                                   )}
                                     className="input-ism mt-1 resize-y"
                                   />
                                 </label>

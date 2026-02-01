@@ -30,7 +30,9 @@ export async function middleware(request: NextRequest) {
   }
 
   if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
-    if (payload.role !== "ADMIN") {
+    const coachAllowed =
+      payload.role === "COACH" && pathname.startsWith("/api/admin/users");
+    if (payload.role !== "ADMIN" && !coachAllowed) {
       if (pathname.startsWith("/api")) {
         return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
       }

@@ -13,7 +13,7 @@ export async function GET(request: Request) {
     }
 
     const payload = await verifySession(token);
-    if (!payload || payload.role !== "ADMIN") {
+    if (!payload || (payload.role !== "ADMIN" && payload.role !== "COACH")) {
       return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
     }
 
@@ -52,6 +52,10 @@ export async function GET(request: Request) {
         projects: {
           select: { id: true },
         },
+        gameProgress: {
+          where: { isComplete: true },
+          select: { id: true },
+        },
       },
       skip: (page - 1) * limit,
       take: limit,
@@ -59,10 +63,13 @@ export async function GET(request: Request) {
     });
 
     return NextResponse.json({
-      users: users.map((user: { projects: { id: string }[] }) => ({
+      users: users.map((user: { projects: { id: string }[]; gameProgress: { id: string }[] }) => ({
         ...user,
         projectCount: user.projects.length,
+        preIncubationCount: user.gameProgress.length,
+        totalProjects: user.projects.length + user.gameProgress.length,
         projects: undefined,
+        gameProgress: undefined,
       })),
       pagination: {
         total,
