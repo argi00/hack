@@ -3,7 +3,6 @@ import Link from "next/link";
 const footerLinks = {
   navigation: [
     { href: "/", label: "Accueil" },
-    { href: "/incubateur", label: "L'Incubateur" },
     { href: "/programmes", label: "Programmes" },
     { href: "/projets", label: "Projets incubés" },
     { href: "/success-stories", label: "Success Stories" },
@@ -11,7 +10,7 @@ const footerLinks = {
   services: [
     { href: "/jeu-educatif", label: "Jeu Éducatif" },
     { href: "/hackathons", label: "Hackathons" },
-    { href: "/incubateur#incubation", label: "Incubation" },
+    { href: "/#comment-ca-marche", label: "Incubation" },
     { href: "/ressources", label: "Ressources" },
     { href: "/mentoring", label: "Mentoring" },
   ],
@@ -34,10 +33,10 @@ const socialLinks = [
 export default function Footer() {
   return (
     <footer className="bg-[#333333] text-white">
-      <div className="container-custom py-16">
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-5">
+      <div className="container-custom py-12 sm:py-16">
+        <div className="grid gap-10 sm:gap-12 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
           {/* Colonne 1 - Logo & Description */}
-          <div className="lg:col-span-1">
+          <div className="sm:col-span-2 md:col-span-1">
             <Link href="/" className="inline-block">
               <span className="font-display text-lg font-bold text-white">
                 ISM INCUBATEUR
@@ -149,7 +148,7 @@ export default function Footer() {
         </div>
 
         {/* Footer bottom */}
-        <div className="mt-16 border-t border-[#666666] pt-8">
+        <div className="mt-12 sm:mt-16 border-t border-[#666666] pt-6 sm:pt-8">
           <p className="text-center text-sm text-[#999999]">
             © 2026 ISM Incubateur - Groupe ISM. Tous droits réservés.
           </p>

@@ -36,7 +36,7 @@ export default function CTAFinal() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-3xl font-bold md:text-4xl lg:text-5xl"
+          className="text-2xl font-bold sm:text-3xl md:text-4xl lg:text-5xl px-2"
           style={{ fontFamily: "var(--font-montserrat)" }}
         >
           Prêt à lancer votre projet ?
@@ -45,7 +45,7 @@ export default function CTAFinal() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="mt-4 text-lg text-[#F5EBE0] md:text-xl"
+          className="mt-3 sm:mt-4 text-base sm:text-lg text-[#F5EBE0] md:text-xl px-2"
         >
           Rejoignez l&apos;incubateur ISM et transformez votre idée en réalité
         </motion.p>
@@ -55,7 +55,7 @@ export default function CTAFinal() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-10 flex flex-wrap justify-center gap-4"
+          className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-2 sm:gap-4 px-2"
         >
           {benefits.map((benefit) => (
             <span
@@ -72,17 +72,17 @@ export default function CTAFinal() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-12 flex flex-col items-center justify-center gap-6 sm:flex-row"
+          className="mt-8 sm:mt-10 flex flex-col items-stretch sm:items-center justify-center gap-3 sm:gap-4 sm:flex-row w-full max-w-sm sm:max-w-none mx-auto px-4 sm:px-0"
         >
           <Link
             href="/inscription"
-            className="btn-primary inline-flex min-h-[70px] min-w-[280px] items-center justify-center px-10 text-xl"
+            className="btn-primary inline-flex min-h-[52px] min-w-[240px] items-center justify-center px-8 text-lg"
           >
             Créer mon compte →
           </Link>
           <Link
             href="/jeu-educatif"
-            className="btn-secondary inline-flex min-h-[70px] min-w-[280px] items-center justify-center px-10 text-xl"
+            className="btn-secondary inline-flex w-full sm:min-w-[220px] sm:w-auto min-h-[48px] sm:min-h-[52px] items-center justify-center px-6 sm:px-8 text-base sm:text-lg"
           >
             Découvrir le jeu éducatif
           </Link>

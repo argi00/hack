@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 const stats = [
   {
@@ -97,28 +98,19 @@ export default function Stats() {
       aria-labelledby="stats-title"
     >
       <div className="container-custom">
-        <p className="text-center text-sm font-semibold uppercase tracking-wider text-[#FF6600]">
-          Nos chiffres clés
-        </p>
-        <h2
-          id="stats-title"
-          className="mt-2 text-center text-2xl font-bold text-[#704214] md:text-3xl"
-          style={{ fontFamily: "var(--font-montserrat)" }}
-        >
-          Des résultats qui parlent
-        </h2>
+        <SectionHeader id="stats-title" label="Nos chiffres clés" title="Des résultats qui parlent" />
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 sm:mt-16 grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat, index) => (
             <motion.div
               key={stat.label}
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="card-beige relative overflow-hidden rounded-xl border-2 border-[#704214] p-6"
+              className="card-beige relative overflow-hidden text-center p-4 sm:p-6"
             >
               <span
-                className="absolute right-6 top-6 h-3 w-3 rounded-full"
+                className="absolute right-4 top-4 h-3 w-3 rounded-full shadow-md"
                 style={{ backgroundColor: stat.color }}
                 aria-hidden
               />
@@ -128,7 +120,7 @@ export default function Stats() {
                 isInView={isInView}
                 delay={index * 0.1}
               />
-              <p className="mt-2 text-base text-gray-600">{stat.label}</p>
+              <p className="mt-3 text-sm text-gray-600 leading-tight">{stat.label}</p>
             </motion.div>
           ))}
         </div>

@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[90vh] overflow-hidden bg-[#8B6F47]">
+    <section className="relative min-h-[85vh] sm:min-h-[90vh] overflow-hidden bg-[#8B6F47]">
       {/* Background image - équipe entrepreneuriale / innovation */}
       <Image
         src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1920&q=80"
@@ -23,7 +23,7 @@ export default function Hero() {
       />
 
       {/* Content */}
-      <div className="container-custom relative z-10 flex min-h-[90vh] flex-col items-center justify-center py-20 text-center">
+      <div className="container-custom relative z-10 flex min-h-[85vh] sm:min-h-[90vh] flex-col items-center justify-center py-12 sm:py-16 md:py-20 text-center">
         {/* Breadcrumb */}
         <motion.p
           initial={{ opacity: 0, y: 10 }}
@@ -39,7 +39,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="font-display text-4xl font-bold leading-tight text-white md:text-5xl lg:text-6xl"
+          className="font-display text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl"
           style={{ fontFamily: "var(--font-montserrat)" }}
         >
           Transformez votre idée
@@ -52,7 +52,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-6 max-w-2xl text-lg text-[#F5EBE0] md:text-xl"
+          className="mt-4 sm:mt-6 max-w-2xl text-base text-[#F5EBE0] sm:text-lg md:text-xl px-2"
         >
           L&apos;incubateur ISM vous accompagne de l&apos;idéation à
           l&apos;incubation avec un parcours gamifié et un accompagnement
@@ -64,7 +64,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-8 flex flex-wrap justify-center gap-3"
+          className="mt-6 sm:mt-8 flex flex-wrap justify-center gap-2 sm:gap-3 px-2"
         >
           {[
             { icon: "🎮", label: "Jeu éducatif" },
@@ -85,17 +85,17 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-12 mb-12 flex flex-col gap-4 sm:flex-row sm:mb-14"
+          className="mt-8 sm:mt-10 mb-12 flex flex-col gap-3 sm:gap-4 sm:flex-row w-full sm:w-auto max-w-sm sm:max-w-none mx-auto sm:mb-14 px-4 sm:px-0"
         >
           <Link
             href="/inscription"
-            className="btn-primary inline-flex min-h-[60px] items-center justify-center px-10 text-lg"
+            className="btn-primary inline-flex min-h-[52px] items-center justify-center px-8 text-lg"
           >
             Rejoindre l&apos;incubateur →
           </Link>
           <a
             href="#comment-ca-marche"
-            className="btn-secondary inline-flex min-h-[60px] items-center justify-center px-10 text-lg"
+            className="btn-secondary inline-flex w-full sm:w-auto min-h-[48px] sm:min-h-[52px] items-center justify-center px-6 sm:px-8 text-base sm:text-lg"
           >
             Découvrir
           </a>

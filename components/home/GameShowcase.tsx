@@ -23,7 +23,7 @@ export default function GameShowcase() {
       aria-labelledby="game-title"
     >
       <div className="container-custom">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+        <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
           {/* Left - Text */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -44,7 +44,7 @@ export default function GameShowcase() {
               <br />
               <span className="text-[#FF6600]">votre idée en projet</span>
             </h2>
-            <p className="mt-6 text-lg text-[#F5EBE0]">
+            <p className="mt-4 sm:mt-6 text-base sm:text-lg text-[#F5EBE0]">
               Apprenez par la simulation en traversant 6 phases interactives qui
               structurent votre projet entrepreneurial.
             </p>
@@ -53,14 +53,14 @@ export default function GameShowcase() {
               {features.map((feature, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-[#FF6600]" />
-                  <span className="text-[#F5EBE0]">{feature}</span>
+                  <span className="text-[#F5EBE0] text-sm sm:text-base">{feature}</span>
                 </li>
               ))}
             </ul>
 
             <Link
               href="/jeu-educatif"
-              className="btn-primary mt-10 inline-flex min-h-[55px] items-center justify-center px-8 text-base"
+              className="btn-primary mt-6 sm:mt-8 inline-flex w-full sm:w-auto min-h-[48px] items-center justify-center px-8 text-base"
             >
               Essayer le jeu →
             </Link>
@@ -73,9 +73,9 @@ export default function GameShowcase() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="overflow-hidden rounded-2xl shadow-2xl"
           >
-            <div className="rounded-2xl bg-slate-900 p-6">
+            <div className="rounded-2xl bg-slate-900 p-4 sm:p-6">
               {/* Game UI Mock */}
-              <div className="rounded-xl bg-slate-950 p-6">
+              <div className="rounded-xl bg-slate-950 p-4 sm:p-6">
                 {/* Progress bar */}
                 <div className="mb-4">
                   <div className="h-3 overflow-hidden rounded-full bg-slate-700">
@@ -101,14 +101,14 @@ export default function GameShowcase() {
                 </div>
 
                 {/* Content area */}
-                <div className="mb-6 flex h-48 items-center justify-center rounded-lg bg-slate-700">
+                <div className="mb-4 sm:mb-6 flex h-32 sm:h-48 items-center justify-center rounded-lg bg-slate-700">
                   <p className="text-sm text-slate-400">
                     [Interface de jeu interactive]
                   </p>
                 </div>
 
                 {/* Question */}
-                <p className="mb-4 text-lg font-bold text-white">
+                <p className="mb-3 sm:mb-4 text-base sm:text-lg font-bold text-white">
                   Définissez votre proposition de valeur unique
                 </p>
 

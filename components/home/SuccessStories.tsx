@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 const stories = [
   {
@@ -63,28 +64,19 @@ export default function SuccessStories() {
       aria-labelledby="stories-title"
     >
       <div className="container-custom">
-        <p className="text-center text-sm font-semibold uppercase tracking-wider text-[#FF6600]">
-          Success Stories
-        </p>
-        <h2
-          id="stories-title"
-          className="mt-2 text-center text-2xl font-bold text-[#704214] md:text-4xl"
-          style={{ fontFamily: "var(--font-montserrat)" }}
-        >
-          Ils ont réussi avec nous
-        </h2>
+        <SectionHeader id="stories-title" label="Success Stories" title="Ils ont réussi avec nous" />
 
-        <div className="mt-16 grid gap-8 md:grid-cols-3">
+        <div className="mt-10 sm:mt-16 grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-3">
           {stories.map((story, index) => (
             <motion.article
               key={story.title}
               initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="card-beige overflow-hidden"
+              className="card-beige overflow-hidden p-0"
             >
-              {/* Image */}
-              <div className="relative h-48 w-full overflow-hidden">
+              {/* Image - pleine largeur */}
+              <div className="relative h-40 sm:h-48 w-full overflow-hidden rounded-t-2xl">
                 <Image
                   src={story.image}
                   alt={story.title}
@@ -96,11 +88,11 @@ export default function SuccessStories() {
 
               <div className="p-6">
                 <span
-                  className={`inline-block rounded-full px-3 py-1 text-xs font-semibold text-white ${story.categoryColor}`}
+                  className={`badge-sm inline-block text-white ${story.categoryColor}`}
                 >
                   {story.category}
                 </span>
-                <h3 className="mt-3 text-xl font-bold text-[#704214]">
+                <h3 className="mt-3 text-lg sm:text-xl font-bold text-[#704214]">
                   {story.title}
                 </h3>
                 <p className="mt-2 text-sm text-gray-600">{story.description}</p>
@@ -110,10 +102,10 @@ export default function SuccessStories() {
                   {story.metrics.map((m) => (
                     <div
                       key={m.label}
-                      className="rounded-lg bg-white p-3 text-center"
+                      className="rounded-xl bg-white p-2 sm:p-3 text-center shadow-sm"
                     >
-                      <p className="text-xs text-gray-500">{m.label}</p>
-                      <p className="text-lg font-bold text-[#704214]">
+                      <p className="text-[10px] sm:text-xs text-gray-500">{m.label}</p>
+                      <p className="text-sm sm:text-lg font-bold text-[#704214]">
                         {m.value}
                       </p>
                     </div>

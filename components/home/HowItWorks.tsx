@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 const steps = [
   {
@@ -23,9 +24,9 @@ const steps = [
     description: [
       "Structurez votre idée à",
       "travers 6 phases ludiques",
-      "et obtenez votre score",
+      "et validez votre projet",
     ],
-    badge: "Obligatoire • Gratuit",
+    badge: "Obligatoire pour incubation",
     badgeColor: "bg-green-100 text-green-800",
   },
   {
@@ -34,11 +35,11 @@ const steps = [
     title: "Hackathons",
     description: [
       "Participez à nos challenges",
-      "thématiques et gagnez",
-      "une place en incubation",
+      "thématiques et boostez",
+      "votre projet",
     ],
-    badge: "Prochain : 15 février 2026",
-    badgeColor: "bg-red-100 text-red-800",
+    badge: "Optionnel • Prochain : 15 fév 2026",
+    badgeColor: "bg-amber-100 text-amber-800",
   },
   {
     number: 4,
@@ -47,9 +48,9 @@ const steps = [
     description: [
       "Bénéficiez d'un accompagnement",
       "personnalisé par nos mentors",
-      "pendant 12 mois",
+      "jusqu'au lancement",
     ],
-    badge: "12 mois • Sur sélection",
+    badge: "Après validation du jeu",
     badgeColor: "bg-indigo-100 text-indigo-800",
   },
 ];
@@ -67,38 +68,29 @@ export default function HowItWorks() {
       aria-labelledby="how-title"
     >
       <div className="container-custom">
-        <p className="text-center text-sm font-semibold uppercase tracking-wider text-[#FF6600]">
-          Comment ça marche ?
-        </p>
-        <h2
-          id="how-title"
-          className="mt-2 text-center text-2xl font-bold text-[#704214] md:text-4xl"
-          style={{ fontFamily: "var(--font-montserrat)" }}
-        >
-          Votre parcours en 4 étapes
-        </h2>
+        <SectionHeader id="how-title" label="Comment ça marche ?" title="Votre parcours en 4 étapes" />
 
-        <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 sm:mt-16 grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, index) => (
             <motion.div
               key={step.number}
               initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="card group relative rounded-2xl p-6"
+              className="card group relative p-5 sm:p-6"
             >
               {/* Step number badge */}
-              <div className="absolute -top-4 left-1/2 flex h-14 w-14 -translate-x-1/2 items-center justify-center rounded-full bg-[#FF6600] text-2xl font-bold text-white">
+              <div className="absolute -top-4 left-1/2 flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-full bg-[#FF6600] text-lg font-bold text-white shadow-md">
                 {step.number}
               </div>
 
               {/* Icon */}
-              <div className="mt-6 flex h-36 items-center justify-center rounded-xl bg-[#F5EBE0] text-5xl">
+              <div className="mt-6 flex h-24 sm:h-28 items-center justify-center rounded-xl bg-[#F5EBE0] text-3xl sm:text-4xl">
                 {step.icon}
               </div>
 
               {/* Content */}
-              <h3 className="mt-6 text-center text-xl font-bold text-[#704214]">
+              <h3 className="mt-5 text-center text-lg font-bold text-[#704214]">
                 {step.title}
               </h3>
               <p className="mt-3 text-center text-sm text-gray-600">
@@ -112,7 +104,7 @@ export default function HowItWorks() {
 
               {/* Badge */}
               <div
-                className={`mt-6 rounded-full px-4 py-2 text-center text-xs font-semibold ${step.badgeColor}`}
+                className={`mt-5 badge-sm text-center ${step.badgeColor}`}
               >
                 {step.badge}
               </div>

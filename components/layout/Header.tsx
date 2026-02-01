@@ -1,34 +1,56 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Navigation simplifiée : 5 liens principaux pour une lecture rapide
 const navLinks = [
   { href: "/", label: "Accueil" },
-  { href: "/incubateur", label: "L'Incubateur" },
   { href: "/hackathons", label: "Hackathons" },
   { href: "/ressources", label: "Ressources" },
   { href: "/contact", label: "Contact" },
 ];
 
+interface User {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+}
+
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
   const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    fetch("/api/auth/session")
+      .then((res) => res.json())
+      .then((data) => setUser(data.user))
+      .catch(() => setUser(null));
+  }, [pathname]);
+
+  const handleLogout = async () => {
+    await fetch("/api/logout", { method: "POST" });
+    setUser(null);
+    setMobileMenuOpen(false);
+    router.push("/");
+    router.refresh();
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-[#704214] shadow-lg">
       <div className="container-custom">
         <div className="flex h-[70px] md:h-[90px] items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="rounded-lg bg-white px-4 py-2">
-              <span className="font-display text-lg font-bold text-[#704214]">
+          <Link href="/" className="flex items-center gap-2 min-w-0">
+            <div className="rounded-lg bg-white px-3 py-1.5 sm:px-4 sm:py-2">
+              <span className="font-display text-base sm:text-lg font-bold text-[#704214]">
                 ISM
               </span>
-              <span className="ml-1 block text-xs font-semibold text-[#FF6600]">
+              <span className="ml-0.5 sm:ml-1 block text-[10px] sm:text-xs font-semibold text-[#FF6600]">
                 INCUBATEUR
               </span>
             </div>
@@ -51,20 +73,37 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* CTA - 1 action principale visible */}
+          {/* CTA - connecté ou non */}
           <div className="hidden items-center gap-4 lg:flex">
-            <Link
-              href="/login"
-              className="font-display text-sm font-medium text-white/90 transition-colors hover:text-white"
-            >
-              Se connecter
-            </Link>
-            <Link
-              href="/inscription"
-              className="btn-primary rounded-full px-5 py-2.5 font-display text-sm"
-            >
-              S&apos;inscrire
-            </Link>
+            {user ? (
+              <>
+                <span className="font-display text-sm text-white/90">
+                  Bonjour, {user.firstName}
+                </span>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="font-display text-sm font-medium text-white/90 transition-colors hover:text-white"
+                >
+                  Se déconnecter
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="font-display text-sm font-medium text-white/90 transition-colors hover:text-white"
+                >
+                  Se connecter
+                </Link>
+                <Link
+                  href="/inscription"
+                  className="btn-primary rounded-full px-5 py-2.5 font-display text-sm"
+                >
+                  S&apos;inscrire
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -123,20 +162,40 @@ export default function Header() {
                 </Link>
               ))}
               <div className="mt-4 flex flex-col gap-3 border-t border-white/20 pt-4">
-                <Link
-                  href="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="rounded-full border-2 border-white py-3 text-center font-display font-semibold text-white"
-                >
-                  Se connecter
-                </Link>
-                <Link
-                  href="/inscription"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="btn-primary py-3 text-center font-display"
-                >
-                  S&apos;inscrire
-                </Link>
+                {user ? (
+                  <>
+                    <span className="py-2 text-center font-display text-white">
+                      Bonjour, {user.firstName}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        handleLogout();
+                      }}
+                      className="rounded-full border-2 border-white py-3 font-display font-semibold text-white"
+                    >
+                      Se déconnecter
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href="/login"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="rounded-full border-2 border-white py-3 text-center font-display font-semibold text-white"
+                    >
+                      Se connecter
+                    </Link>
+                    <Link
+                      href="/inscription"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="btn-primary py-3 text-center font-display"
+                    >
+                      S&apos;inscrire
+                    </Link>
+                  </>
+                )}
               </div>
             </nav>
           </motion.div>

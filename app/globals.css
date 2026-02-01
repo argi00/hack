@@ -33,10 +33,16 @@
   --font-display: var(--font-montserrat);
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-open-sans), system-ui, sans-serif;
+  overflow-x: hidden;
+  min-width: 320px;
 }
 
 .font-display {
@@ -77,19 +83,28 @@ body {
   transform: translateY(-1px);
 }
 
+/* Cards - design unifié */
 .card {
-  @apply rounded-2xl bg-white p-6 shadow-lg transition-shadow;
+  @apply rounded-2xl bg-white p-6 shadow-md transition-all duration-300;
 }
 .card:hover {
-  box-shadow: 0 8px 24px rgba(112, 66, 20, 0.1);
+  box-shadow: 0 12px 28px rgba(112, 66, 20, 0.12);
 }
 
 .card-beige {
-  @apply rounded-2xl p-6 shadow-lg transition-shadow;
+  @apply rounded-2xl p-6 shadow-md transition-all duration-300;
   background: var(--ism-beige-light);
 }
 .card-beige:hover {
-  box-shadow: 0 8px 24px rgba(112, 66, 20, 0.08);
+  box-shadow: 0 12px 28px rgba(112, 66, 20, 0.1);
+}
+
+/* Badges - tailles standardisées */
+.badge-sm {
+  @apply rounded-full px-3 py-1.5 text-xs font-semibold;
+}
+.badge-md {
+  @apply rounded-full px-4 py-2 text-sm font-semibold;
 }
 
 .badge-orange {
@@ -110,13 +125,25 @@ body {
 }
 
 .section {
-  @apply py-16 md:py-24;
+  @apply py-14 sm:py-20 md:py-24 lg:py-28;
 }
 
 .container-custom {
-  @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 md:px-8 lg:px-12;
 }
 
 .gradient-brown {
   background: linear-gradient(135deg, var(--ism-brown) 0%, var(--ism-brown-light) 100%);
+}
+
+/* Champs formulaire */
+.input-ism {
+  @apply w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-900 transition-colors focus:border-[#FF6600] focus:outline-none focus:ring-2 focus:ring-[#FF6600]/20;
+  min-height: 44px;
+}
+.input-ism:disabled {
+  @apply cursor-not-allowed bg-gray-100 opacity-70;
+}
+.input-error {
+  @apply border-red-500 focus:border-red-500 focus:ring-red-500/20;
 }

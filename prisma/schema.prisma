@@ -1,0 +1,82 @@
+// Prisma schema - ISM Incubateur
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   String                 @id @default(cuid())
+  email                String                 @unique
+  passwordHash         String
+  firstName            String
+  lastName             String
+  phone                String
+  hasProject           Boolean                @default(false)
+  projectDescription   String?
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  gameProgress         GameProgress?
+  projects             Project[]
+  hackathonRegistrations HackathonRegistration[]
+}
+
+model Project {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  status    String   // "pre-incubation" | "incubation"
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Hackathon {
+  id          String                 @id @default(cuid())
+  title       String
+  slug        String                 @unique
+  dateStart   DateTime
+  dateEnd     DateTime
+  description String
+  prize       String?
+  places      String?
+  status      String                 // "ouvert" | "bientôt" | "terminé"
+  image       String?
+  featured    Boolean                @default(false)
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @updatedAt
+  registrations HackathonRegistration[]
+}
+
+model HackathonRegistration {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hackathonId String
+  hackathon  Hackathon @relation(fields: [hackathonId], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now())
+  @@unique([userId, hackathonId])
+}
+
+model GameProgress {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectName    String
+  currentPhase   Int      @default(1)
+  currentQuestion Int    @default(0)
+  phaseScores    String   // JSON: {"1": 150, "2": 140, ...}
+  answers        String   // JSON: {"1_phase1_problem": "opt1", ...}
+  projectContent String?  // JSON: {"phase1_problem": "...", "phase1_solution": "..."}
+  oneSentence    String?  // Résumé du projet en une phrase
+  totalScore     Int      @default(0)
+  maturityScore  Int      @default(0) // Score de maturité en %
+  isComplete     Boolean  @default(false)
+  lastPlayedAt   DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
