@@ -100,13 +100,20 @@ body {
 }
 
 .card-baobab {
-  @apply rounded-2xl p-6 shadow-md transition-all duration-300 relative overflow-hidden;
+  @apply rounded-2xl p-6 shadow-md transition-all duration-300 relative overflow-hidden sm:p-8;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.92) 100%), 
               url('/baobab.jpeg') center/cover no-repeat;
   background-attachment: fixed;
 }
 .card-baobab:hover {
   box-shadow: 0 12px 28px rgba(112, 66, 20, 0.15);
+}
+
+/* Section with full baobab background */
+.section-baobab {
+  @apply relative min-h-screen;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.88) 100%),
+              url('/baobab.jpeg') center/cover no-repeat fixed;
 }
 
 /* Badges - tailles standardisées */

@@ -7,18 +7,18 @@ import { motion } from "framer-motion";
 export default function Hero() {
   return (
     <section className="relative min-h-[85vh] sm:min-h-[90vh] overflow-hidden bg-[#8B6F47]">
-      {/* Background image - équipe entrepreneuriale / innovation */}
+      {/* Background image - étudiant innovateur */}
       <Image
-        src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1920&q=80"
+        src="/etudiant.jpeg"
         alt=""
         fill
-        className="object-cover opacity-40"
+        className="object-cover opacity-60"
         priority
         sizes="100vw"
       />
       {/* Overlay gradient */}
       <div
-        className="absolute inset-0 bg-gradient-to-b from-[#704214]/90 to-[#5C3317]/95"
+        className="absolute inset-0 bg-gradient-to-b from-[#704214]/70 to-[#5C3317]/75"
         aria-hidden
       />
 

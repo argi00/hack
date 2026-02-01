@@ -176,7 +176,7 @@ export default function InscriptionPage() {
   };
 
   return (
-    <main className="section bg-[#F5EBE0]">
+    <main className="section-baobab">
         <div className="container-custom">
           <div className="mx-auto max-w-lg">
             <h1 className="text-center font-display text-2xl font-bold text-[#704214] sm:text-3xl">

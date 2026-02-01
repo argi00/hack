@@ -50,10 +50,10 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="section bg-[#F5EBE0]">
+    <main className="section-baobab">
         <div className="container-custom">
           <div className="mx-auto max-w-md">
-            <div className="card-baobab p-6 sm:p-8">
+            <div className="card-baobab">
               <h1 className="text-center font-display text-2xl font-bold text-[#704214] sm:text-3xl">
                 Se connecter
               </h1>
