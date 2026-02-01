@@ -352,6 +352,27 @@ export default function CoachPage() {
                             </span>
                           </div>
 
+                          {/* Project Content/Summary */}
+                          {project.projectContent && Object.keys(project.projectContent).length > 0 && (
+                            <div className="mb-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                              <p className="text-sm font-semibold text-blue-900 mb-2">
+                                📋 Résumé du projet
+                              </p>
+                              <div className="space-y-2">
+                                {Object.entries(project.projectContent).map(([key, value]) => (
+                                  <div key={key}>
+                                    <p className="text-xs font-medium text-blue-700 uppercase">
+                                      {key}
+                                    </p>
+                                    <p className="text-sm text-blue-900 mt-1">
+                                      {typeof value === "string" ? value : JSON.stringify(value)}
+                                    </p>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
                           {/* Maturity Score for pre-incubation */}
                           {project.maturityScore !== undefined && (
                             <div className="mb-4 p-3 bg-gray-50 rounded-lg">
