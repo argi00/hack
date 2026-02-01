@@ -1,9 +1,22 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import { verifySession } from "@/lib/auth";
 
 // GET /api/admin/users - Récupérer tous les utilisateurs
 export async function GET(request: Request) {
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("ism_session")?.value;
+    if (!token) {
+      return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+    }
+
+    const payload = await verifySession(token);
+    if (!payload || payload.role !== "ADMIN") {
+      return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
+    }
+
     const { searchParams } = new URL(request.url);
     const role = searchParams.get("role");
     const search = searchParams.get("search");
@@ -46,7 +59,7 @@ export async function GET(request: Request) {
     });
 
     return NextResponse.json({
-      users: users.map((user) => ({
+      users: users.map((user: { projects: { id: string }[] }) => ({
         ...user,
         projectCount: user.projects.length,
         projects: undefined,

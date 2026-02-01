@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
 import { DataTable } from "@/components/ui/DataTable";
 import { RoleBadge } from "@/components/ui/RoleBadge";
 import { Modal } from "@/components/ui/Modal";
+import { useAuth } from "@/lib/auth-context";
 
 interface User {
   id: string;
@@ -33,12 +33,35 @@ interface UserDetail {
 }
 
 export default function AdminPage() {
+  const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<UserDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("");
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+    if (user.role !== "ADMIN") {
+      router.push("/");
+    }
+  }, [authLoading, user, router]);
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="animate-spin">
+          <div className="h-12 w-12 border-4 border-gray-200 border-t-[#FF6600] rounded-full"></div>
+        </div>
+      </div>
+    );
+  }
 
   // Charger les utilisateurs
   useEffect(() => {
@@ -124,8 +147,6 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <Header />
-
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-12">
         {/* Hero Section */}
         <motion.div
@@ -314,7 +335,6 @@ export default function AdminPage() {
         )}
       </Modal>
 
-      <Footer />
     </div>
   );
 }

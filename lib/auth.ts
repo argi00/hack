@@ -8,11 +8,16 @@ function getSecret() {
 export interface SessionPayload {
   userId: string;
   email: string;
+  role: string;
   exp: number;
 }
 
-export async function createSession(userId: string, email: string): Promise<string> {
-  const token = await new SignJWT({ userId, email })
+export async function createSession(
+  userId: string,
+  email: string,
+  role: string
+): Promise<string> {
+  const token = await new SignJWT({ userId, email, role })
     .setProtectedHeader({ alg: "HS256" })
     .setExpirationTime("7d")
     .setIssuedAt()

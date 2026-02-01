@@ -1,14 +1,37 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import { verifySession } from "@/lib/auth";
 
 // POST /api/coach/feedbacks - Créer un feedback
 export async function POST(request: Request) {
   try {
+    const prismaClient = prisma as any;
+    const cookieStore = await cookies();
+    const token = cookieStore.get("ism_session")?.value;
+    if (!token) {
+      return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+    }
+
+    const payload = await verifySession(token);
+    if (!payload || payload.role !== "COACH") {
+      return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
+    }
+
+    const coach = await prismaClient.coach.findUnique({
+      where: { userId: payload.userId },
+      select: { id: true },
+    });
+
+    if (!coach) {
+      return NextResponse.json({ error: "Coach introuvable" }, { status: 404 });
+    }
+
     const body = await request.json();
-    const { coachId, projectId, userId, category, priority, content } = body;
+    const { projectId, userId, category, priority, content } = body;
 
     // Validation
-    if (!coachId || !projectId || !userId || !category || !priority || !content) {
+    if (!projectId || !userId || !category || !priority || !content) {
       return NextResponse.json(
         { error: "Tous les champs sont obligatoires" },
         { status: 400 }
@@ -22,9 +45,9 @@ export async function POST(request: Request) {
       );
     }
 
-    const feedback = await prisma.feedback.create({
+    const feedback = await prismaClient.feedback.create({
       data: {
-        coachId,
+        coachId: coach.id,
         projectId,
         userId,
         category,
@@ -63,18 +86,29 @@ export async function POST(request: Request) {
 // GET /api/coach/feedbacks - Mes feedbacks
 export async function GET(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
-    const coachId = searchParams.get("coachId");
-
-    if (!coachId) {
-      return NextResponse.json(
-        { error: "coachId requis" },
-        { status: 400 }
-      );
+    const prismaClient = prisma as any;
+    const cookieStore = await cookies();
+    const token = cookieStore.get("ism_session")?.value;
+    if (!token) {
+      return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    const feedbacks = await prisma.feedback.findMany({
-      where: { coachId },
+    const payload = await verifySession(token);
+    if (!payload || payload.role !== "COACH") {
+      return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
+    }
+
+    const coach = await prismaClient.coach.findUnique({
+      where: { userId: payload.userId },
+      select: { id: true },
+    });
+
+    if (!coach) {
+      return NextResponse.json({ error: "Coach introuvable" }, { status: 404 });
+    }
+
+    const feedbacks = await prismaClient.feedback.findMany({
+      where: { coachId: coach.id },
       select: {
         id: true,
         category: true,

@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
 import { Modal } from "@/components/ui/Modal";
 import { FeedbackForm } from "@/components/ui/FeedbackForm";
 import { PriorityBadge } from "@/components/ui/PriorityBadge";
 import { CategoryBadge } from "@/components/ui/CategoryBadge";
+import { useAuth } from "@/lib/auth-context";
 
 interface Project {
   id: string;
@@ -15,6 +15,7 @@ interface Project {
   description: string;
   status: string;
   user: {
+    id: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -31,20 +32,31 @@ interface Project {
 }
 
 export default function CoachPage() {
+  const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+    if (user.role !== "COACH") {
+      router.push("/");
+    }
+  }, [authLoading, user, router]);
+
   // Charger les projets assignés
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         setLoading(true);
-        // TODO: Remplacer par la véritable coachId depuis le contexte d'auth
-        const coachId = "test-coach-id";
-        const res = await fetch(`/api/coach/projects?coachId=${coachId}`);
+        const res = await fetch(`/api/coach/projects`);
         const data = await res.json();
         setProjects(data);
       } catch (error) {
@@ -66,15 +78,12 @@ export default function CoachPage() {
 
     try {
       setSubmitting(true);
-      const coachId = "test-coach-id"; // TODO: depuis contexte auth
-
       const res = await fetch("/api/coach/feedbacks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          coachId,
           projectId: selectedProject.id,
-          userId: selectedProject.user.id || "unknown",
+          userId: selectedProject.user.id,
           ...formData,
         }),
       });
@@ -95,24 +104,20 @@ export default function CoachPage() {
     }
   };
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-white flex flex-col">
-        <Header />
         <main className="flex-1 flex items-center justify-center">
           <div className="animate-spin">
             <div className="h-12 w-12 border-4 border-gray-200 border-t-[#FF6600] rounded-full"></div>
           </div>
         </main>
-        <Footer />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <Header />
-
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-12">
         {/* Hero Section */}
         <motion.div
@@ -294,7 +299,6 @@ export default function CoachPage() {
         )}
       </Modal>
 
-      <Footer />
     </div>
   );
 }

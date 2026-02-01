@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import { verifySession } from "@/lib/auth";
 
 // GET /api/admin/users/[id] - Récupérer un utilisateur et ses projets
 export async function GET(
@@ -7,6 +9,17 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("ism_session")?.value;
+    if (!token) {
+      return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+    }
+
+    const payload = await verifySession(token);
+    if (!payload || payload.role !== "ADMIN") {
+      return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
+    }
+
     const { id } = await params;
 
     const user = await prisma.user.findUnique({
@@ -80,6 +93,17 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("ism_session")?.value;
+    if (!token) {
+      return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+    }
+
+    const payload = await verifySession(token);
+    if (!payload || payload.role !== "ADMIN") {
+      return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
+    }
+
     const { id } = await params;
     const body = await request.json();
     const { role, isActive } = body;

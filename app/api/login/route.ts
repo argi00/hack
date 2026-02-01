@@ -28,6 +28,13 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!user.isActive) {
+      return NextResponse.json(
+        { error: "Votre compte est désactivé" },
+        { status: 403 }
+      );
+    }
+
     const valid = await bcrypt.compare(password, user.passwordHash);
     if (!valid) {
       return NextResponse.json(
@@ -36,10 +43,19 @@ export async function POST(request: Request) {
       );
     }
 
-    const token = await createSession(user.id, user.email);
+    const token = await createSession(user.id, user.email, user.role);
 
     const response = NextResponse.json(
-      { message: "Connexion réussie", user: { id: user.id, email: user.email, firstName: user.firstName } },
+      {
+        message: "Connexion réussie",
+        user: {
+          id: user.id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          role: user.role,
+        },
+      },
       { status: 200 }
     );
 

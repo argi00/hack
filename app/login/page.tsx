@@ -33,7 +33,15 @@ export default function LoginPage() {
       }
 
       await refetch();
-      router.push("/");
+
+      const role = data?.user?.role;
+      if (role === "ADMIN") {
+        router.push("/admin");
+      } else if (role === "COACH") {
+        router.push("/coach");
+      } else {
+        router.push("/");
+      }
     } catch {
       setError("Impossible de contacter le serveur. Réessayez.");
     } finally {
