@@ -6,6 +6,12 @@ const prisma = new PrismaClient();
 const MAMANE_EMAIL = "mamane@test.com";
 const MAMANE_PASSWORD = "password123";
 
+const ADMIN_EMAIL = "admin@test.com";
+const ADMIN_PASSWORD = "admin123";
+
+const COACH_EMAIL = "coach@test.com";
+const COACH_PASSWORD = "coach123";
+
 const mamanePreIncubation = {
   projectName: "AgriPrice — Prix agricoles en temps réel",
   oneSentence:
@@ -108,6 +114,53 @@ async function main() {
     });
   }
   console.log("Seed terminé :", hackathons.length, "hackathons créés/mis à jour");
+
+  // Créer l'utilisateur administrateur
+  const adminPasswordHash = await bcrypt.hash(ADMIN_PASSWORD, 10);
+  await prisma.user.upsert({
+    where: { email: ADMIN_EMAIL },
+    create: {
+      email: ADMIN_EMAIL,
+      passwordHash: adminPasswordHash,
+      firstName: "Admin",
+      lastName: "ISM",
+      phone: "221700000000",
+      role: "ADMIN",
+    },
+    update: {
+      firstName: "Admin",
+      lastName: "ISM",
+      role: "ADMIN",
+    },
+  });
+  console.log("Administrateur créé :", ADMIN_EMAIL, "(mot de passe:", ADMIN_PASSWORD, ")");
+
+  // Créer l'utilisateur coach
+  const coachPasswordHash = await bcrypt.hash(COACH_PASSWORD, 10);
+  const coach = await prisma.user.upsert({
+    where: { email: COACH_EMAIL },
+    create: {
+      email: COACH_EMAIL,
+      passwordHash: coachPasswordHash,
+      firstName: "Coach",
+      lastName: "ISM",
+      phone: "221700000001",
+      role: "COACH",
+    },
+    update: {
+      firstName: "Coach",
+      lastName: "ISM",
+      role: "COACH",
+    },
+  });
+  console.log("Coach créé :", COACH_EMAIL, "(mot de passe:", COACH_PASSWORD, ")");
+
+  // Créer le profil Coach dans la table Coach
+  await prisma.coach.upsert({
+    where: { userId: coach.id },
+    create: { userId: coach.id },
+    update: {},
+  });
 
   // Utilisateur Mamane + projets factices
   const passwordHash = await bcrypt.hash(MAMANE_PASSWORD, 10);
