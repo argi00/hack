@@ -43,7 +43,7 @@ export async function PATCH(request: Request) {
 
     const updateData: {
       projectName?: string;
-      projectContent?: string;
+      projectContent?: string | null;
       oneSentence?: string | null;
     } = {};
 
