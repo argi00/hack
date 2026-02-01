@@ -99,6 +99,16 @@ body {
   box-shadow: 0 12px 28px rgba(112, 66, 20, 0.1);
 }
 
+.card-baobab {
+  @apply rounded-2xl p-6 shadow-md transition-all duration-300 relative overflow-hidden;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.92) 100%), 
+              url('/baobab.jpeg') center/cover no-repeat;
+  background-attachment: fixed;
+}
+.card-baobab:hover {
+  box-shadow: 0 12px 28px rgba(112, 66, 20, 0.15);
+}
+
 /* Badges - tailles standardisées */
 .badge-sm {
   @apply rounded-full px-3 py-1.5 text-xs font-semibold;

@@ -193,7 +193,7 @@ export default function InscriptionPage() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
                   transition={{ duration: 0.3 }}
-                  className="card p-6 sm:p-8"
+                  className="card-baobab p-6 sm:p-8"
                 >
                   <h2 className="mb-6 font-display text-lg font-semibold text-[#704214]">
                     Étape 1 sur 3 : {stepTitles[1]}
@@ -291,7 +291,7 @@ export default function InscriptionPage() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
                   transition={{ duration: 0.3 }}
-                  className="card p-6 sm:p-8"
+                  className="card-baobab p-6 sm:p-8"
                 >
                   <h2 className="mb-6 font-display text-lg font-semibold text-[#704214]">
                     Étape 2 sur 3 : {stepTitles[2]}
@@ -398,7 +398,7 @@ export default function InscriptionPage() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
                   transition={{ duration: 0.3 }}
-                  className="card p-6 sm:p-8"
+                  className="card-baobab p-6 sm:p-8"
                 >
                   <h2 className="mb-6 font-display text-lg font-semibold text-[#704214]">
                     Étape 3 sur 3 : {stepTitles[3]}
@@ -513,7 +513,7 @@ export default function InscriptionPage() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.4 }}
-                  className="card p-8 text-center"
+                  className="card-baobab p-8 text-center"
                 >
                   <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-[#10B981]/20 text-5xl">
                     ✓
